@@ -1,41 +1,22 @@
-import { StatusBar } from 'expo-status-bar';
-import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
-import { NavigationContainer } from '@react-navigation/native';
-import { createStackNavigator } from '@react-navigation/stack';
-import Home from './Screens/home/Home';
-import SignIn from './Screens/auth/SignIn';
-import SignUp from './Screens/auth/SignUp';
-import AuthLoading from './Screens/auth/AuthLoading';
-const Stack = createStackNavigator();
-export default function App() {
-  return (
-    <NavigationContainer>
-      <Stack.Navigator
-        screenOptions={{
-          headerShown: false,
-        }}
-      >
-        <Stack.Screen
-          options={{
-            headerShown: false,
-          }}
-          name='AuthLoading'
-          component={AuthLoading}
-        />
-        <Stack.Screen name='Home' component={Home} />
-        <Stack.Screen name='SignIn' component={SignIn} />
-        <Stack.Screen name='SignUp' component={SignUp} />
-      </Stack.Navigator>
-    </NavigationContainer>
-  );
-}
-
+import React, { useEffect, useState } from 'react';
+import { Text, View, StyleSheet } from 'react-native';
+import { Provider } from 'react-redux';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import store from './redux/store';
+import AppContent from './AppContent';
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
     justifyContent: 'center',
+    alignItems: 'center',
   },
 });
+const App = ({ navigation }) => {
+  return (
+    <Provider store={store}>
+      <AppContent />
+    </Provider>
+  );
+};
+
+export default App;

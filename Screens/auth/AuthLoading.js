@@ -9,21 +9,6 @@ const styles = StyleSheet.create({
   },
 });
 const AuthLoading = ({ navigation }) => {
-  useEffect(() => {
-    checkToken();
-  }, []);
-  const checkToken = async () => {
-    try {
-      const token = await AsyncStorage.getItem('@token');
-      if (token) {
-        navigation.navigate('Home');
-        return;
-      }
-      navigation.navigate('SignIn');
-    } catch (error) {
-      console.log(error);
-    }
-  };
   return (
     <View style={styles.container}>
       <ActivityIndicator size={'large'} color={'black'} />

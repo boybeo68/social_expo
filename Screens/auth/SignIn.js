@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   Text,
   View,
@@ -12,13 +12,18 @@ import { AntDesign } from '@expo/vector-icons';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { styles } from './style';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import * as AuthAction from '../../redux/action/authAction';
 const uriImage =
   'https://nganhangphapluat.thukyluat.vn/images/CauHoi_Hinh/9eb6abaa-8cda-456c-ad66-26ba4da23ffe.jpg';
 const { width, height } = Dimensions.get('screen');
 
-const SignIn = ({ navigation }) => {
-  const saveToken = async () => {
-    await AsyncStorage.setItem('@token', 'tokendata');
+const SignIn = ({ navigation, authActions }) => {
+  const [email, setemail] = useState('');
+  const [pass, setpass] = useState('');
+  const onLogin = async () => {
+    authActions.login(email, pass);
   };
   const nextSignUp = () => {
     navigation.navigate('SignUp');
@@ -29,11 +34,26 @@ const SignIn = ({ navigation }) => {
         <Image source={{ uri: uriImage }} style={{ width: 200, height: 200 }} />
       </View>
       <View style={styles.body}>
-        <TextInput placeholder={'email'} style={styles.input} />
-        <TextInput placeholder={'password'} secureTextEntry={true}  style={styles.input} />
+        <TextInput
+          onChangeText={(text) => {
+            setemail(text);
+          }}
+          value={email}
+          placeholder={'email'}
+          style={styles.input}
+        />
+        <TextInput
+          onChangeText={(text) => {
+            setpass(text);
+          }}
+          value={pass}
+          placeholder={'password'}
+          secureTextEntry={true}
+          style={styles.input}
+        />
       </View>
       <View style={styles.footer}>
-        <TouchableOpacity style={styles.button}>
+        <TouchableOpacity onPress={onLogin} style={styles.button}>
           <Text style={{ color: 'green' }}>Login</Text>
         </TouchableOpacity>
       </View>
@@ -44,5 +64,8 @@ const SignIn = ({ navigation }) => {
     </View>
   );
 };
-
-export default SignIn;
+const mapStateToProps = (state) => ({});
+const mapDispatchToProps = (dispatch) => ({
+  authActions: bindActionCreators(AuthAction, dispatch),
+});
+export default connect(mapStateToProps, mapDispatchToProps)(SignIn);
