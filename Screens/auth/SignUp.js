@@ -9,35 +9,40 @@ import {
   Button,
   TouchableOpacity,
 } from 'react-native';
+import { connect } from 'react-redux';
 const uriImage =
   'https://nganhangphapluat.thukyluat.vn/images/CauHoi_Hinh/9eb6abaa-8cda-456c-ad66-26ba4da23ffe.jpg';
 import { styles } from './style';
 import API from '../../config';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-const SignUp = ({ navigation }) => {
+import { bindActionCreators } from 'redux';
+import * as AuthAction from '../../redux/actions/authAction';
+const SignUp = ({ navigation, count, actionAuth }) => {
   const [email, setemail] = useState('');
   const [pass, setpass] = useState('');
   const [name, setname] = useState('');
   const onSignUp = async () => {
-    console.log(email, name, pass);
-    try {
-      let res = await API.post('api/users', {
-        name: name,
-        password: pass,
-        email: email,
-      });
-      console.log(res.data);
-      await AsyncStorage.setItem('@token', res.data.token);
-      navigation.navigate('Home');
-    } catch (error) {
-      alert(error);
-    }
+    // console.log(email, name, pass);
+    // try {
+    //   let res = await API.post('api/users', {
+    //     name: name,
+    //     password: pass,
+    //     email: email,
+    //   });
+    //   console.log(res.data);
+    //   await AsyncStorage.setItem('@token', res.data.token);
+    //   navigation.navigate('Home');
+    // } catch (error) {
+    //   alert(error);
+    // }
+    actionAuth.signUpRequest(name, email, pass);
   };
   return (
     <View style={styles.container}>
       <View style={styles.logo}>
         <Image source={{ uri: uriImage }} style={{ width: 200, height: 200 }} />
       </View>
+      <Text>{count}</Text>
       <View style={styles.body}>
         <TextInput
           value={name}
@@ -73,5 +78,10 @@ const SignUp = ({ navigation }) => {
     </View>
   );
 };
-
-export default SignUp;
+const mapStateToProps = (state) => ({
+  count: state.authReducer.count,
+});
+const mapDispatchToProps = (dispatch) => ({
+  actionAuth: bindActionCreators(AuthAction, dispatch),
+});
+export default connect(mapStateToProps, mapDispatchToProps)(SignUp);
