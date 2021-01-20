@@ -22,27 +22,13 @@ const SignUp = ({ navigation, count, actionAuth }) => {
   const [pass, setpass] = useState('');
   const [name, setname] = useState('');
   const onSignUp = async () => {
-    // console.log(email, name, pass);
-    // try {
-    //   let res = await API.post('api/users', {
-    //     name: name,
-    //     password: pass,
-    //     email: email,
-    //   });
-    //   console.log(res.data);
-    //   await AsyncStorage.setItem('@token', res.data.token);
-    //   navigation.navigate('Home');
-    // } catch (error) {
-    //   alert(error);
-    // }
-    actionAuth.signUpRequest(name, email, pass);
+    actionAuth.signUpRequest(name, email, pass, navigation);
   };
   return (
     <View style={styles.container}>
       <View style={styles.logo}>
         <Image source={{ uri: uriImage }} style={{ width: 200, height: 200 }} />
       </View>
-      <Text>{count}</Text>
       <View style={styles.body}>
         <TextInput
           value={name}

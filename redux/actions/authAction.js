@@ -7,9 +7,10 @@ export const incree = (param) => ({
 export const requestAdd = () => ({
   type: ADD_REQUEST,
 });
-export const signUpRequest = (name, email, password) => ({
+export const signUpRequest = (name, email, password, navigation) => ({
   type: SIGN_UP_REQUEST,
   name,
   email,
   password,
+  navigation
 });
